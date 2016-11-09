@@ -1,0 +1,9 @@
+[package]
+name = "vntyper-gtk"
+version = "0.1.0"
+authors = ["Do Duy <doduycm@gmail.com>"]
+
+[dependencies]
+gtk = "0.0.7"
+gdk = "0.5.0"
+vntyper = { git = "https://github.com/vntyper/vntyper.git" }
