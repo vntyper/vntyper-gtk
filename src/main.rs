@@ -16,7 +16,6 @@ use gtk::TextView;
 use gtk::TextBuffer;
 use gtk::TextIter;
 use gtk::ScrolledWindow;
-use gdk::enums::modifier_type as modifier;
 
 trait Buffer {
     fn get_insert_iter(&self) -> Option<TextIter>;
@@ -71,7 +70,7 @@ impl Buffer for TextBuffer {
 fn clipboard_copy(s: &str) {
     let xclip = match std::process::Command::new("xclip").args(&["-sel", "clip"])
         .stdin(std::process::Stdio::piped()).spawn() {
-        Err(_) => return (),
+        Err(_) => panic!("Cannot run xclip."),
         Ok(x) => x,
     };
     if let Err(e) = xclip.stdin.unwrap().write_all(s.as_bytes()) {
@@ -98,7 +97,7 @@ fn main() {
         match widget.get_buffer() {
             Some(buffer) => {
                 // <CTRL + s> pressed
-                if key == 's' && (ev.get_state() & modifier::ControlMask).bits() != 0 {
+                if key == 's' && (ev.get_state() & gdk::CONTROL_MASK).bits() != 0 {
                     clipboard_copy(&buffer.get_content());
                     gtk::main_quit();
                     Inhibit(false)
