@@ -68,9 +68,9 @@ impl Buffer for TextBuffer {
 }
 
 fn clipboard_copy(s: &str) {
-    let xclip = match std::process::Command::new("xclip").args(&["-sel", "clip"])
+    let xclip = match std::process::Command::new("xsel").args(&["-b", "-i"])
         .stdin(std::process::Stdio::piped()).spawn() {
-        Err(_) => panic!("Cannot run xclip."),
+        Err(_) => panic!("Cannot run xsel."),
         Ok(x) => x,
     };
     if let Err(e) = xclip.stdin.unwrap().write_all(s.as_bytes()) {
